@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMAKORE - Iniciar Sesión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { bg: '#030303', surface: '#0a0a0a', border: '#1f1f1f' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
+        
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-white selection:text-black bg-grid">
+
+    <!-- Navbar Limpia -->
+    <nav class="fixed top-0 z-50 w-full bg-brand-bg/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-[90rem] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.2em] text-white">ARMAKORE</span>
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-6">
+                <a href="index.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Inicio</a>
+                <a href="laptops.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Laptops</a>
+                <a href="escritorio.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Escritorios</a>
+                <a href="componentes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Componentes</a>
+                <a href="personalizacion.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Personalización PC</a>
+                <a href="integrantes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Integrantes</a>
+            </div>
+            
+            <div class="flex items-center space-x-5 shrink-0">
+                <div class="hidden lg:flex items-center bg-[#111] border border-[#222] rounded-full px-3 py-1.5 focus-within:border-gray-500 transition-colors w-48">
+                    <input type="text" placeholder="Buscar..." class="bg-transparent border-none outline-none text-xs text-white placeholder-gray-600 w-full">
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <a href="inicio-sesion.html" class="text-white flex items-center gap-2 group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </a>
+                <a href="carrito.html" aria-label="Carrito" class="text-gray-400 hover:text-white transition-colors relative group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                    <span id="cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-white text-black text-[9px] font-bold flex items-center justify-center rounded-full">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Central del Login -->
+    <main class="flex-grow flex items-center justify-center relative px-4 pt-24 pb-12">
+        
+        <!-- Luz de fondo ambiental -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full pointer-events-none z-0"></div>
+
+        <!-- Tarjeta de Login -->
+        <div class="relative z-10 w-full max-w-md bg-brand-surface border border-brand-border rounded-2xl p-8 sm:p-10 shadow-2xl">
+            
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-white tracking-tight mb-2">Iniciar Sesión</h1>
+                <p class="text-sm text-gray-500">Accede al núcleo de tu cuenta ARMAKORE</p>
+                <p class="text-[11px] text-gray-600 mt-3">Cuenta de prueba: demo@armakore.com · contraseña Demo1234</p>
+            </div>
+
+            <!-- Contenedor de campos (Sin formulario para evitar error 405) -->
+            <div class="space-y-5">
+                <!-- Campo Email -->
+                <div>
+                    <label for="email" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
+                    <input type="email" id="email" required 
+                        class="w-full bg-[#111] border border-[#222] text-white rounded-lg px-4 py-3 outline-none transition-all focus:border-white focus:ring-1 focus:ring-white input-glow"
+                        placeholder="tu@correo.com">
+                </div>
+
+                <!-- Campo Contraseña -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="password" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Contraseña</label>
+                        <a href="#" class="text-xs font-medium text-gray-500 hover:text-white transition-colors">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <input type="password" id="password" required 
+                        class="w-full bg-[#111] border border-[#222] text-white rounded-lg px-4 py-3 outline-none transition-all focus:border-white focus:ring-1 focus:ring-white input-glow"
+                        placeholder="••••••••">
+                </div>
+
+                <!-- Botón Principal (Enlace directo) -->
+                <p id="form-error" role="alert" class="hidden text-sm text-red-300 bg-red-950/40 border border-red-900 rounded-lg px-4 py-3"></p>
+                <button type="button" id="login-btn" class="w-full block text-center bg-white text-black font-bold text-sm py-3.5 rounded-lg hover:bg-gray-200 transition-colors mt-2 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]">Entrar al Sistema</button>
+            </div>
+
+            <!-- Separador -->
+            <div class="flex items-center gap-4 my-8">
+                <div class="flex-1 h-[1px] bg-brand-border"></div>
+                <span class="text-xs text-gray-600 font-semibold tracking-widest uppercase">O continuar con</span>
+                <div class="flex-1 h-[1px] bg-brand-border"></div>
+            </div>
+
+            <!-- Botones Sociales -->
+            <div class="grid grid-cols-2 gap-4">
+                <button class="flex items-center justify-center gap-2 bg-[#111] border border-[#222] hover:bg-[#1a1a1a] hover:border-gray-500 transition-colors py-2.5 rounded-lg text-sm font-medium text-white">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>
+                    Google
+                </button>
+                <button class="flex items-center justify-center gap-2 bg-[#111] border border-[#222] hover:bg-[#1a1a1a] hover:border-gray-500 transition-colors py-2.5 rounded-lg text-sm font-medium text-white">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.477,2,2,6.477,2,12c0,4.419,2.865,8.166,6.839,9.489c0.5,0.09,0.682-0.218,0.682-0.484c0-0.236-0.009-1.004-0.014-1.806c-2.782,0.602-3.369-1.343-3.369-1.343c-0.454-1.158-1.11-1.466-1.11-1.466c-0.908-0.62,0.069-0.608,0.069-0.608c1.003,0.07,1.531,1.032,1.531,1.032c0.892,1.53,2.341,1.088,2.91,0.832c0.092-0.647,0.35-1.088,0.636-1.338c-2.22-0.253-4.555-1.113-4.555-4.951c0-1.093,0.39-1.988,1.029-2.688c-0.103-0.253-0.446-1.272,0.098-2.65c0,0,0.84-0.27,2.75,1.026c0.798-0.222,1.654-0.333,2.504-0.337c0.85,0.004,1.705,0.115,2.504,0.337c1.909-1.296,2.747-1.026,2.747-1.026c0.546,1.379,0.202,2.398,0.1,2.65c0.64,0.7,1.028,1.595,1.028,2.688c0,3.848-2.339,4.695-4.566,4.943c0.359,0.309,0.678,0.92,0.678,1.855c0,1.338-0.012,2.419-0.012,2.747c0,0.268,0.18,0.58,0.688,0.482C19.138,20.161,22,16.416,22,12C22,6.477,17.523,2,12,2z"/></svg>
+                    GitHub
+                </button>
+            </div>
+            
+            <!-- Link a Registro -->
+            <div class="mt-8 text-center">
+                <span class="text-xs text-gray-500">¿Aún no tienes un perfil?</span>
+                <a href="registro.html" class="text-xs font-semibold text-white hover:underline ml-1">Crear cuenta</a>
+            </div>
+
+        </div>
+    </main>
+
+
+<script src="armakore.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const next = AK.safeNext(AK.qs('next')) || 'dashboard.html';
+    if (AK.currentUser() && !AK.qs('cambiar')) { location.replace(next); return; }
+
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const btn = document.getElementById('login-btn');
+    const err = document.getElementById('form-error');
+
+    function showError(msg, field) {
+        err.textContent = msg;
+        err.classList.remove('hidden');
+        [email, password].forEach(i => i.classList.remove('border-red-500'));
+        const el = field === 'email' ? email : field === 'password' ? password : null;
+        if (el) { el.classList.add('border-red-500'); el.focus(); }
+    }
+    function clearError() { err.classList.add('hidden'); [email, password].forEach(i => i.classList.remove('border-red-500')); }
+    [email, password].forEach(i => i.addEventListener('input', clearError));
+
+    function submit() {
+        clearError();
+        btn.disabled = true; btn.textContent = 'Verificando…';
+        setTimeout(() => {
+            const r = AK.login(email.value, password.value);
+            if (!r.ok) { btn.disabled = false; btn.textContent = 'Entrar al Sistema'; showError(r.error, r.field); return; }
+            location.href = next;
+        }, 450);
+    }
+    btn.addEventListener('click', submit);
+    [email, password].forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); }));
+
+    // Botones sociales (simulados)
+    document.querySelectorAll('button').forEach(b => {
+        const provider = b.textContent.trim();
+        if (!['Google', 'GitHub'].includes(provider)) return;
+        b.addEventListener('click', () => {
+            b.disabled = true; b.style.opacity = '.6';
+            AK.toast('Conectando con ' + provider + ' (simulado)…');
+            setTimeout(() => { AK.socialLogin(provider); location.href = next; }, 900);
+        });
+    });
+
+    // Recuperar contraseña (simulado)
+    const forgot = document.querySelector('a[href="#"]');
+    forgot?.addEventListener('click', e => {
+        e.preventDefault();
+        const inputCls = 'width:100%;background:#111;border:1px solid #222;color:#fff;border-radius:8px;padding:10px 12px;font-size:14px;outline:none';
+        const m = AK.modal({
+            title: 'Recuperar contraseña',
+            subtitle: 'Simulación: no se envía ningún correo real.',
+            body: '<label style="font-size:11px;color:#9ca3af;font-weight:600">Correo electrónico</label>' +
+                  '<input id="rec-email" type="email" style="' + inputCls + ';margin-top:6px" placeholder="tu@correo.com" value="' + AK.esc(email.value.trim()) + '">' +
+                  '<p id="rec-msg" role="status" style="font-size:12px;color:#9ca3af;margin:10px 0 0"></p>',
+            actions: [
+                { label: 'Cancelar' },
+                { label: 'Enviar enlace', primary: true, onClick: ({ box }) => {
+                    const rec = box.querySelector('#rec-email'), msg = box.querySelector('#rec-msg');
+                    if (box.dataset.step === '2') {
+                        const r = AK.resetPassword(box.dataset.mail, rec.value);
+                        if (!r.ok) { msg.style.color = '#f87171'; msg.textContent = r.error; return false; }
+                        email.value = box.dataset.mail; password.value = '';
+                        AK.toast('Contraseña actualizada. Ya puedes iniciar sesión.');
+                        return true;
+                    }
+                    if (!AK.validEmail(rec.value.trim())) { msg.style.color = '#f87171'; msg.textContent = 'Escribe un correo válido.'; return false; }
+                    box.dataset.step = '2'; box.dataset.mail = rec.value.trim();
+                    box.querySelector('label').textContent = 'Nueva contraseña (enlace simulado recibido)';
+                    rec.type = 'password'; rec.value = ''; rec.placeholder = 'Mínimo 8 caracteres'; rec.focus();
+                    msg.style.color = '#9ca3af';
+                    msg.textContent = 'Si existe una cuenta con ese correo, recibirías un enlace. En la simulación, elige aquí tu nueva contraseña.';
+                    box.querySelectorAll('button')[1].textContent = 'Guardar contraseña';
+                    return false;
+                } }
+            ]
+        });
+    });
+});
+</script>
+</body>
+</html>

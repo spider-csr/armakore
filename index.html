@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMAKORE - Inicio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { bg: '#030303', surface: '#0a0a0a', border: '#1f1f1f' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
+        
+        .perspective-container { perspective: 1500px; }
+        
+        .laptop-base {
+            transform: rotateX(65deg);
+            transform-style: preserve-3d;
+            box-shadow: 
+                0px 50px 50px rgba(0,0,0,0.9),
+                inset 0px 5px 15px rgba(255,255,255,0.1);
+        }
+        
+        .screen-glow { transition: opacity 0.8s ease, transform 0.8s ease; }
+        .laptop-wrapper:hover .screen-glow { opacity: 1; }
+        .laptop-wrapper:hover .cat-logo {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9)) brightness(250%);
+        }
+        
+        .cat-logo { transition: all 0.5s ease; filter: grayscale(100%) opacity(0.3); }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 40px rgba(255,255,255,0.3);
+        }
+
+        .category-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: #333;
+            background-color: #0f0f0f;
+        }
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+        }
+        .badge-p { background-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+        .badge-h { background-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+        .badge-e { background-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+        .badge-a { background-color: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+    
+        /* Interacción visual del cursor */
+        .cursor-orb {
+            position: fixed;
+            width: 7px;
+            height: 7px;
+            border: 1px solid rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.12);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            animation: cursorParticle 0.65s ease-out forwards;
+        }
+
+        .cursor-orb::before,
+        .cursor-orb::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            opacity: 0.85;
+        }
+
+        .cursor-orb::after {
+            width: 11px;
+            height: 1px;
+            background: rgba(255,255,255,0.7);
+        }
+
+        .cursor-orb::before {
+            height: 11px;
+            width: 1px;
+        }
+
+        .cursor-click {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            border: 1px solid rgba(255,255,255,0.95);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.45);
+            pointer-events: none;
+            z-index: 10000;
+            animation: clickPulse 0.5s ease-out forwards;
+        }
+
+        .cursor-click::before,
+        .cursor-click::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: rgba(255,255,255,0.9);
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-click::before {
+            width: 1px;
+            height: 24px;
+        }
+
+        .cursor-click::after {
+            width: 24px;
+            height: 1px;
+        }
+
+        @keyframes cursorParticle {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            20% { opacity: 0.95; }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translateY(-9px) scale(1) rotate(45deg);
+            }
+        }
+
+        @keyframes clickPulse {
+            0% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(0.45);
+            }
+            70% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2.1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cursor-orb,
+            .cursor-click {
+                animation-duration: 0.01ms;
+            }
+        }
+
+
+        /* Gatito SVG: dibujado completamente con código */
+        .cat-button {
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .cat-character {
+            transform-origin: 50% 75%;
+            transition: filter 0.3s ease;
+        }
+
+        .cat-button:hover .cat-character {
+            filter: drop-shadow(0 0 11px rgba(101,70,245,0.55));
+        }
+
+        .cat-button:hover .cat-spark {
+            opacity: 0.35;
+        }
+
+        .cat-ear {
+            transform-box: fill-box;
+            transform-origin: center bottom;
+        }
+
+        .cat-tail {
+            transform-box: fill-box;
+            transform-origin: left center;
+        }
+
+        .cat-eye {
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .cat-paw-left,
+        .cat-paw-right {
+            transform-box: fill-box;
+            transform-origin: center top;
+        }
+
+        .cat-button.playing .cat-character {
+            animation: catBounce 0.85s cubic-bezier(.34,1.56,.64,1);
+        }
+
+        .cat-button.playing .cat-tail {
+            animation: catTail 0.85s ease-in-out;
+        }
+
+        .cat-button.playing .cat-ear-left {
+            animation: catEarLeft 0.85s ease-in-out;
+        }
+
+        .cat-button.playing .cat-ear-right {
+            animation: catEarRight 0.85s ease-in-out;
+        }
+
+        .cat-button.playing .cat-eye {
+            animation: catBlink 0.85s ease-in-out;
+        }
+
+        .cat-button.playing .cat-paw-left {
+            animation: catPawLeft 0.85s ease-in-out;
+        }
+
+        .cat-button.playing .cat-paw-right {
+            animation: catPawRight 0.85s ease-in-out;
+        }
+
+        .cat-spark {
+            opacity: 0;
+        }
+
+        .cat-button.playing .cat-spark {
+            animation: catSpark 0.75s ease-out forwards;
+        }
+
+        @keyframes catBounce {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); }
+            22%  { transform: translateY(-8px) rotate(-3deg) scale(1.02); }
+            45%  { transform: translateY(0) rotate(3deg) scale(0.99); }
+            68%  { transform: translateY(-4px) rotate(-2deg) scale(1.01); }
+            100% { transform: translateY(0) rotate(0deg) scale(1); }
+        }
+
+        @keyframes catTail {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(13deg); }
+            50% { transform: rotate(-10deg); }
+            75% { transform: rotate(9deg); }
+        }
+
+        @keyframes catEarLeft {
+            0%, 100% { transform: rotate(0deg); }
+            38% { transform: rotate(-10deg); }
+            58% { transform: rotate(5deg); }
+        }
+
+        @keyframes catEarRight {
+            0%, 100% { transform: rotate(0deg); }
+            38% { transform: rotate(10deg); }
+            58% { transform: rotate(-5deg); }
+        }
+
+        @keyframes catBlink {
+            0%, 42%, 100% { transform: scaleY(1); }
+            48%, 55% { transform: scaleY(0.12); }
+        }
+
+        @keyframes catPawLeft {
+            0%, 100% { transform: rotate(0deg); }
+            30% { transform: rotate(-12deg) translateY(-2px); }
+            55% { transform: rotate(4deg); }
+        }
+
+        @keyframes catPawRight {
+            0%, 100% { transform: rotate(0deg); }
+            34% { transform: rotate(12deg) translateY(-2px); }
+            58% { transform: rotate(-4deg); }
+        }
+
+        @keyframes catSpark {
+            0%   { opacity: 0; transform: scale(0.2); }
+            25%  { opacity: 0.95; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.35) translateY(-3px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cat-button.playing .cat-character,
+            .cat-button.playing .cat-tail,
+            .cat-button.playing .cat-ear-left,
+            .cat-button.playing .cat-ear-right,
+            .cat-button.playing .cat-eye,
+            .cat-button.playing .cat-paw-left,
+            .cat-button.playing .cat-paw-right,
+            .cat-button.playing .cat-spark {
+                animation-duration: 0.01ms;
+            }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-white selection:text-black bg-grid">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 z-50 w-full bg-brand-bg/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-[90rem] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.2em] text-white">ARMAKORE</span>
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-6">
+                <a href="index.html" class="text-[11px] font-medium text-white border-b border-white pb-1 tracking-wider uppercase">Inicio</a>
+                <a href="laptops.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Laptops</a>
+                <a href="escritorio.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Escritorios</a>
+                <a href="componentes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Componentes</a>
+                <a href="personalizacion.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Personalización PC</a>
+                <a href="integrantes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Integrantes</a>
+            </div>
+            
+            <div class="flex items-center space-x-5 shrink-0">
+                <div class="hidden lg:flex items-center bg-[#111] border border-[#222] rounded-full px-3 py-1.5 focus-within:border-gray-500 transition-colors w-48">
+                    <input id="site-search" type="search" autocomplete="off" placeholder="Buscar..." aria-label="Buscar productos" class="bg-transparent border-none outline-none text-xs text-white placeholder-gray-600 w-full">
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <a href="inicio-sesion.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </a>
+                <a href="carrito.html" class="text-gray-400 hover:text-white transition-colors relative group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                    <span id="cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-white text-black text-[9px] font-bold flex items-center justify-center rounded-full">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-12 flex flex-col items-center justify-center relative">
+        
+        <!-- Luz de fondo ambiental -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+        <!-- Textos de Presentación -->
+        <div class="text-center relative z-10 mb-16 px-4 mt-8">
+            <span class="text-xs font-semibold tracking-[0.3em] text-gray-400 uppercase mb-4 block">El nuevo estándar</span>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">
+                ARMAKORE <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">P16 Max</span>
+            </h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto font-light">
+                Rediseñada desde cero. Arquitectura 100% modular, chasis de aluminio aeroespacial y rendimiento sin límites. Actualiza cualquier componente en segundos.
+            </p>
+        </div>
+
+        <!-- MODELO LAPTOP EN CSS -->
+        <div class="perspective-container relative z-20 w-full flex justify-center laptop-wrapper group mt-6">
+            <div class="relative w-full max-w-[700px] flex flex-col items-center">
+                
+                <!-- Pantalla -->
+                <div class="w-[85%] md:w-[600px] h-[220px] md:h-[340px] bg-[#050505] border-[6px] border-[#222] rounded-t-2xl relative overflow-hidden flex items-center justify-center z-10 shadow-[0_-10px_30px_rgba(255,255,255,0.02)]">
+                    <div class="absolute inset-0 bg-gradient-to-b from-purple-900/10 to-blue-900/10 opacity-0 screen-glow z-0"></div>
+                    
+                    <button type="button" id="cat-button" class="relative z-10 cat-logo cat-button flex flex-col items-center bg-transparent border-0 p-0">
+                        <svg class="w-32 h-28 md:w-36 md:h-32" viewBox="0 0 160 135" fill="none" aria-label="Gatito ARMAKORE">
+                            <!-- Chispas -->
+                            <g class="cat-spark" stroke="#ffffff" stroke-width="2" stroke-linecap="round">
+                                <path d="M18 28v9M13.5 32.5h9"/>
+                                <path d="M139 23v9M134.5 27.5h9"/>
+                                <path d="M143 98v7M139.5 101.5h7"/>
+                                <path d="M17 98v7M13.5 101.5h7"/>
+                            </g>
+
+                            <g class="cat-character">
+                                <!-- Cola grande y juguetona -->
+                                <path class="cat-tail"
+                                      d="M116 94 C145 100, 151 72, 134 62 C125 57, 124 49, 137 43"
+                                      stroke="#6546F5" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M137 43 C143 40, 145 34, 141 30"
+                                      stroke="#4D35C7" stroke-width="12" stroke-linecap="round"/>
+
+                                <!-- Cuerpo redondeado -->
+                                <path d="M52 96 C48 73, 61 57, 80 55 C103 53, 120 70, 119 97
+                                         C118 112, 107 120, 87 120 C66 120, 55 112, 52 96Z"
+                                      fill="#6546F5"/>
+
+                                <!-- Sombra del cuerpo -->
+                                <path d="M53 91 C51 106, 61 116, 77 119 C69 111, 70 98, 76 89
+                                         C67 86, 59 87, 53 91Z"
+                                      fill="#5639D7"/>
+
+                                <!-- Patitas -->
+                                <path class="cat-paw-left"
+                                      d="M60 101 C58 110, 58 121, 65 123 L78 123
+                                         C82 123, 83 117, 78 114 L72 110 L72 100Z"
+                                      fill="#5639D7"/>
+                                <path class="cat-paw-right"
+                                      d="M96 102 C99 111, 104 121, 111 122 L122 122
+                                         C126 122, 128 117, 123 114 L115 108 L113 98Z"
+                                      fill="#5639D7"/>
+
+                                <!-- Cabeza tipo gato cartoon -->
+                                <path d="M48 49 L52 17 L72 31
+                                         C81 27, 92 27, 101 31 L121 17 L125 49
+                                         C128 72, 114 87, 87 88
+                                         C60 87, 46 72, 48 49Z"
+                                      fill="#6546F5"/>
+
+                                <!-- Sombra inferior de cabeza -->
+                                <path d="M50 65 C56 80, 70 87, 87 88 C104 87, 117 80, 123 65
+                                         C114 74, 101 78, 87 78 C72 78, 59 74, 50 65Z"
+                                      fill="#5A3DDD"/>
+
+                                <!-- Orejas interiores -->
+                                <path class="cat-ear cat-ear-left" d="M56 25 L59 48 L72 34Z" fill="#4D35C7"/>
+                                <path class="cat-ear cat-ear-right" d="M117 25 L114 48 L101 34Z" fill="#4D35C7"/>
+
+                                <!-- Ojos enormes -->
+                                <g class="cat-eye">
+                                    <ellipse cx="68" cy="51" rx="14" ry="17" fill="#ffffff"/>
+                                    <ellipse cx="106" cy="51" rx="14" ry="17" fill="#ffffff"/>
+                                    <ellipse cx="72" cy="54" rx="7" ry="10" fill="#21184F"/>
+                                    <ellipse cx="102" cy="54" rx="7" ry="10" fill="#21184F"/>
+                                    <circle cx="74" cy="49" r="3.2" fill="#ffffff"/>
+                                    <circle cx="104" cy="49" r="3.2" fill="#ffffff"/>
+                                </g>
+
+                                <!-- Hocico -->
+                                <path d="M84 62 Q87 59 90 62 Q87 67 84 62Z" fill="#F4A9C8"/>
+                                <path d="M87 66 Q83 70 79 67 M87 66 Q91 70 95 67"
+                                      stroke="#F7C9DC" stroke-width="2" stroke-linecap="round"/>
+
+                                <!-- Bigotes -->
+                                <g stroke="#F4EFFF" stroke-width="1.7" stroke-linecap="round" opacity="0.9">
+                                    <path d="M77 63 L55 59"/>
+                                    <path d="M77 68 L54 69"/>
+                                    <path d="M97 63 L119 59"/>
+                                    <path d="M97 68 L120 69"/>
+                                </g>
+
+                                <!-- Collar ARMAKORE -->
+                                <path d="M63 82 Q87 91 111 82 L109 91 Q87 100 65 91Z"
+                                      fill="#38268E"/>
+                                <circle cx="87" cy="92" r="8" fill="#F5A623"/>
+                                <path d="M87 89v6 M84.5 92.5h5"
+                                      stroke="#5A2B00" stroke-width="2" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                        <span class="mt-0 text-[10px] tracking-widest font-bold text-white">ARMAKORE</span>
+                    </button>
+                    
+                    <div class="absolute top-0 left-0 w-full h-[150%] bg-white/5 transform -rotate-45 translate-x-[-50%] translate-y-[-50%]"></div>
+                </div>
+
+                <!-- Base y Teclado -->
+                <div class="w-[95%] md:w-[700px] h-[80px] md:h-[120px] bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] rounded-b-3xl relative -mt-[2px] z-20 laptop-base flex flex-col items-center border-t border-[#333]">
+                    <div class="w-[80%] h-[40px] md:h-[60px] mt-2 bg-[#050505] rounded-md border border-[#111] opacity-80"></div>
+                    <div class="w-[20%] h-[20px] md:h-[30px] mt-2 bg-[#111] rounded-sm border border-[#222]"></div>
+                    <div class="absolute top-0 w-[15%] h-[2px] bg-[#444] rounded-b-lg"></div>
+                    <div class="absolute bottom-1 w-[80%] h-[2px] bg-purple-500/50 shadow-[0_0_15px_#a855f7] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Especificaciones Rápidas -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-12 mt-20 relative z-10 max-w-4xl mx-auto px-6 text-center divide-x divide-brand-border">
+            <div class="px-4">
+                <div class="text-2xl font-bold text-white mb-1">16"</div>
+                <div class="text-[10px] text-gray-500 tracking-widest uppercase">Pantalla OLED</div>
+            </div>
+            <div class="px-4">
+                <div class="text-2xl font-bold text-white mb-1">&lt; 1min</div>
+                <div class="text-[10px] text-gray-500 tracking-widest uppercase">Cambio de RAM</div>
+            </div>
+            <div class="px-4 hidden md:block">
+                <div class="text-2xl font-bold text-white mb-1">100%</div>
+                <div class="text-[10px] text-gray-500 tracking-widest uppercase">Aluminio CNC</div>
+            </div>
+            <div class="px-4 hidden md:block">
+                <div class="text-2xl font-bold text-white mb-1">0</div>
+                <div class="text-[10px] text-gray-500 tracking-widest uppercase">Tornillos Ocultos</div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: Categorías de Laptops -->
+        <section class="mt-24 w-full max-w-[90rem] mx-auto px-4 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold tracking-[0.3em] text-gray-400 uppercase mb-4 block inline-block">Elige tu perfil</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-white">Series ARMAKORE</h2>
+                <p class="text-sm text-gray-400 mt-3 max-w-2xl mx-auto">Cada serie diseñada para un propósito específico. Encuentra la que se adapte a tu forma de trabajar.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- SERIE P - POTENCIA -->
+                <div class="category-card bg-brand-surface border border-brand-border rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="category-icon badge-p text-white">P</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">SERIE P</div>
+                            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Potencia</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        Máxima capacidad de procesamiento para trabajo pesado. GPUs dedicadas, CPUs de alto rendimiento y refrigeración avanzada.
+                    </p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Renderizado 3D y video 4K</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Desarrollo de juegos AAA</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Ciencia de datos y ML</span>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-brand-border">
+                        <div class="text-[10px] font-semibold text-gray-400 mb-1">IDEAL PARA:</div>
+                        <div class="text-xs text-white">Profesionales creativos, ingenieros, game devs</div>
+                    </div>
+                </div>
+
+                <!-- SERIE H - HOGAR -->
+                <div class="category-card bg-brand-surface border border-brand-border rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="category-icon badge-h text-white">H</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">SERIE H</div>
+                            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Hogar</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        Equilibrio perfecto entre rendimiento y portabilidad. Diseño elegante para entretenimiento, estudios y vida diaria.
+                    </p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Streaming y multimedia</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Trabajo escolar/universitario</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Gaming casual</span>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-brand-border">
+                        <div class="text-[10px] font-semibold text-gray-400 mb-1">IDEAL PARA:</div>
+                        <div class="text-xs text-white">Estudiantes, familias, usuarios generales</div>
+                    </div>
+                </div>
+
+                <!-- SERIE E - EMPRESARIAL -->
+                <div class="category-card bg-brand-surface border border-brand-border rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="category-icon badge-e text-white">E</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">SERIE E</div>
+                            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Empresarial</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        Seguridad, productividad y fiabilidad corporativa. Características empresariales integradas y gestión remota.
+                    </p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-emerald-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Seguridad biométrica</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-emerald-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Multitarea eficiente</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-emerald-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Videollamadas HD</span>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-brand-border">
+                        <div class="text-[10px] font-semibold text-gray-400 mb-1">IDEAL PARA:</div>
+                        <div class="text-xs text-white">Corporativos, consultores, ejecutivos</div>
+                    </div>
+                </div>
+
+                <!-- SERIE A - AHORRO -->
+                <div class="category-card bg-brand-surface border border-brand-border rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-amber-500/20 to-transparent rounded-bl-full"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="category-icon badge-a text-white">A</div>
+                        <div>
+                            <div class="text-sm font-bold text-white">SERIE A</div>
+                            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Ahorro</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        Eficiencia energética máxima con precio accesible. Batería duradera y peso ultraligero para movilidad total.
+                    </p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Hasta 18hrs batería</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Menos de 1kg de peso</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-3 h-3 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-[10px] text-gray-500">Precios accesibles</span>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-brand-border">
+                        <div class="text-[10px] font-semibold text-gray-400 mb-1">IDEAL PARA:</div>
+                        <div class="text-xs text-white">Nómadas digitales, estudiantes, tareas básicas</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CATEGORÍAS GENERALES DEL SITIO -->
+            <div class="mt-10">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-semibold tracking-[0.3em] text-gray-400 uppercase mb-3 block">Más de ARMAKORE</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Explora el ecosistema</h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                    <!-- ESCRITORIOS -->
+                    <a href="escritorio.html"
+                       class="category-card bg-brand-surface border border-brand-border rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-violet-500/20 to-transparent rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="category-icon bg-violet-600/90 text-white text-lg">D</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">ESCRITORIOS</div>
+                                <div class="text-[10px] text-gray-500 uppercase tracking-widest">Sistemas de escritorio</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Equipos de escritorio diseñados para rendimiento, expansión y trabajo a largo plazo.
+                        </p>
+                        <div class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                            Explorar →
+                        </div>
+                    </a>
+
+                    <!-- COMPONENTES -->
+                    <a href="componentes.html"
+                       class="category-card bg-brand-surface border border-brand-border rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="category-icon bg-cyan-600/90 text-white text-lg">C</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">COMPONENTES</div>
+                                <div class="text-[10px] text-gray-500 uppercase tracking-widest">Hardware modular</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Memoria, almacenamiento y demás componentes para actualizar o ampliar tu equipo.
+                        </p>
+                        <div class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                            Ver componentes →
+                        </div>
+                    </a>
+
+                    <!-- PERSONALIZACIÓN -->
+                    <a href="personalizacion.html"
+                       class="category-card bg-brand-surface border border-brand-border rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-fuchsia-500/20 to-transparent rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="category-icon bg-fuchsia-600/90 text-white text-lg">P</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">PERSONALIZACIÓN PC</div>
+                                <div class="text-[10px] text-gray-500 uppercase tracking-widest">Configura tu equipo</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Crea una configuración a tu medida y adapta el equipo a tus necesidades.
+                        </p>
+                        <div class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                            Personalizar →
+                        </div>
+                    </a>
+
+                    <!-- INTEGRANTES -->
+                    <a href="integrantes.html"
+                       class="category-card bg-brand-surface border border-brand-border rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-transparent rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="category-icon bg-orange-600/90 text-white text-lg">I</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">INTEGRANTES</div>
+                                <div class="text-[10px] text-gray-500 uppercase tracking-widest">Nuestro equipo</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Conoce a las personas detrás de ARMAKORE y del proyecto.
+                        </p>
+                        <div class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">
+                            Conocer equipo →
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Link a todas las laptops -->
+            <div class="mt-12 text-center">
+                <a href="laptops.html" class="inline-flex items-center gap-2 text-white border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition-all">
+                    Ver Todas las Laptops
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Eslogan Final -->
+        <div class="mt-32 mb-8 relative z-10 w-full text-center px-4">
+            <h2 class="text-3xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-white to-gray-500 tracking-[0.1em] uppercase text-glow">
+                Arma desde el núcleo
+            </h2>
+            <div class="w-24 h-[2px] bg-white mx-auto mt-8 opacity-20"></div>
+        </div>
+
+    </main>
+
+    
+<script>
+(function () {
+    const CART_KEY = 'armakore_cart';
+
+    function readCart() {
+        try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+        catch { return []; }
+    }
+
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-count');
+        if (!badge) return;
+        const count = readCart().reduce((sum, item) => sum + Number(item.quantity || 1), 0);
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.classList.toggle('hidden', count === 0);
+        badge.setAttribute('aria-label', `${count} producto${count === 1 ? '' : 's'} en el carrito`);
+    }
+
+    window.armakoreCart = {
+        get: readCart,
+        count: () => readCart().reduce((sum, item) => sum + Number(item.quantity || 1), 0),
+        save(cart) {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+            updateCartBadge();
+            window.dispatchEvent(new CustomEvent('armakore:cart-updated'));
+        },
+        add(product) {
+            const cart = readCart();
+            const existing = cart.find(item => item.name === product.name);
+            if (existing) existing.quantity = Number(existing.quantity || 1) + 1;
+            else cart.push({ ...product, quantity: 1 });
+            this.save(cart);
+        },
+        updateCartBadge
+    };
+
+    document.addEventListener('DOMContentLoaded', updateCartBadge);
+    window.addEventListener('storage', e => {
+        if (e.key === CART_KEY) updateCartBadge();
+    });
+})();
+</script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('site-search');
+    if (!input) return;
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && input.value.trim()) {
+            window.location.href = `laptops.html?q=${encodeURIComponent(input.value.trim())}`;
+        }
+    });
+});
+</script>
+
+<script src="armakore.js"></script>
+</body>
+</html>

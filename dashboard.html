@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMAKORE - Mi Núcleo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { bg: '#030303', surface: '#0a0a0a', border: '#1f1f1f' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
+        
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+
+        .cat-logo-filter { filter: grayscale(100%) opacity(0.2); }
+
+        /* Menu desplegable del avatar */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .user-group:hover .dropdown-menu,
+        .user-group.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-white selection:text-black bg-grid">
+
+    <!-- Navbar con Avatar de Usuario -->
+    <nav class="fixed top-0 z-50 w-full bg-brand-bg/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-[90rem] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.2em] text-white">ARMAKORE</span>
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-6">
+                <a href="index.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Inicio</a>
+                <a href="laptops.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Laptops</a>
+                <a href="escritorio.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Escritorios</a>
+                <a href="componentes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Componentes</a>
+                <a href="personalizacion.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Personalización PC</a>
+                <a href="integrantes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Integrantes</a>
+            </div>
+            
+                        <div class="flex items-center space-x-5 shrink-0">
+                <a href="carrito.html" aria-label="Carrito" class="text-gray-400 hover:text-white transition-colors relative group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                    <span id="cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-white text-black text-[9px] font-bold flex items-center justify-center rounded-full">0</span>
+                </a>
+                <div class="relative user-group" id="user-menu">
+                    <button type="button" id="avatar-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menú de cuenta" class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-bold text-xs cursor-pointer hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-shadow">AK</button>
+                    <div class="dropdown-menu absolute right-0 top-10 mt-2 w-56 bg-[#0a0a0a] border border-[#222] rounded-lg shadow-2xl overflow-hidden z-50">
+                        <div class="px-4 py-3 border-b border-[#222]">
+                            <p id="u-name" class="text-sm text-white font-medium truncate"></p>
+                            <p id="u-email" class="text-[10px] text-gray-500 truncate"></p>
+                        </div>
+                        <a href="#ecosistema" class="block px-4 py-2 text-xs text-gray-400 hover:bg-[#1a1a1a] hover:text-white transition-colors">Mi Ecosistema</a>
+                        <a href="#pedidos" class="block px-4 py-2 text-xs text-gray-400 hover:bg-[#1a1a1a] hover:text-white transition-colors">Mis Pedidos</a>
+                        <a href="#garantias" class="block px-4 py-2 text-xs text-gray-400 hover:bg-[#1a1a1a] hover:text-white transition-colors">Garantías Activas</a>
+                        <button type="button" id="open-settings" class="block w-full text-left px-4 py-2 text-xs text-gray-400 hover:bg-[#1a1a1a] hover:text-white transition-colors">Configuración</button>
+                        <div class="border-t border-[#222]"></div>
+                        <button type="button" id="logout" class="block w-full text-left px-4 py-2 text-xs text-red-400 hover:bg-[#1a1a1a] hover:text-red-300 transition-colors">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-28 pb-16 max-w-[90rem] mx-auto px-4 lg:px-8 w-full relative z-10">
+        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border pb-6">
+            <div>
+                <h1 id="greeting" class="text-3xl md:text-4xl font-bold text-white mb-2">Hola.</h1>
+                <p class="text-sm text-gray-400 flex items-center gap-2">
+                    <span id="status-dot" class="w-2 h-2 rounded-full bg-gray-500"></span>
+                    <span id="status-text">Cargando tu ecosistema…</span>
+                </p>
+            </div>
+            <button type="button" id="add-device" class="mt-4 md:mt-0 bg-white text-black text-xs font-bold px-5 py-2.5 rounded hover:bg-gray-200 transition-colors">
+                + Añadir Nuevo Equipo
+            </button>
+        </header>
+
+        <section id="ecosistema" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-3 gap-8"></section>
+
+        <section id="pedidos" class="scroll-mt-24 mt-16">
+            <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-widest">Mis pedidos</h2>
+            <div id="orders-list" class="flex flex-col gap-4"></div>
+        </section>
+
+        <section id="garantias" class="scroll-mt-24 mt-16">
+            <h2 class="text-sm font-bold text-white mb-4 uppercase tracking-widest">Garantías activas</h2>
+            <div id="warranty-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </section>
+    </main>
+
+    <script src="armakore.js"></script>
+    <script>
+    (function () {
+        if (!AK.requireAuth()) return;
+        const $ = s => document.querySelector(s);
+        const fmt = d => new Date(d).toLocaleDateString('es-EC', { day: 'numeric', month: 'short', year: 'numeric' });
+        const card = 'bg-brand-surface border border-brand-border rounded-xl';
+        const inputStyle = 'width:100%;background:#111;border:1px solid #222;color:#fff;border-radius:8px;padding:10px 12px;font-size:14px;outline:none;margin-top:6px';
+        const labelStyle = 'display:block;font-size:11px;color:#9ca3af;font-weight:600;margin-top:14px';
+        let selectedId = null;
+
+        function header() {
+            const me = AK.currentUser();
+            const devices = AK.getDevices(me.email);
+            $('#avatar-btn').textContent = AK.initials(me.name);
+            $('#u-name').textContent = me.name;
+            $('#u-email').textContent = me.email;
+            $('#greeting').textContent = 'Hola, ' + me.name.trim().split(/\s+/)[0] + '.';
+            $('#status-dot').className = 'w-2 h-2 rounded-full ' + (devices.length ? 'bg-green-500 animate-pulse' : 'bg-gray-500');
+            $('#status-text').textContent = devices.length
+                ? 'Estado del ecosistema: Óptimo y sincronizado (' + devices.length + ' equipo' + (devices.length === 1 ? '' : 's') + ')'
+                : 'Aún no tienes equipos registrados';
+            return { me, devices };
+        }
+
+        /* ---------- ecosistema ---------- */
+        function ecosystem(devices) {
+            const host = $('#ecosistema');
+            if (!devices.length) {
+                host.innerHTML = `<div class="lg:col-span-3 ${card} border-dashed p-10 text-center">
+                    <h2 class="text-xl font-bold text-white mb-2">Todavía no tienes equipos</h2>
+                    <p class="text-sm text-gray-400 mb-6">Compra una laptop o un escritorio, o registra uno que ya tengas con su número de serie.</p>
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        <a href="laptops.html" class="bg-white text-black text-xs font-bold px-5 py-2.5 rounded hover:bg-gray-200 transition-colors">Ver laptops</a>
+                        <button type="button" data-open-add class="border border-[#444] text-white text-xs font-bold px-5 py-2.5 rounded hover:bg-[#1a1a1a] transition-colors">Registrar un equipo</button>
+                    </div></div>`;
+                return;
+            }
+            if (!devices.some(d => d.id === selectedId)) selectedId = devices[0].id;
+            const d = devices.find(x => x.id === selectedId);
+            const w = AK.warranty(d), b = AK.battery(d);
+            const options = devices.map(x => `<option value="${AK.esc(x.id)}" ${x.id === selectedId ? 'selected' : ''}>${AK.esc(x.model)} (#${AK.esc(x.id)})</option>`).join('');
+            host.innerHTML = `
+            <div class="lg:col-span-2 ${card} p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-500"></div>
+                <div class="w-full md:w-1/3 flex justify-center" aria-hidden="true">
+                    <div class="w-40 h-28 bg-[#050505] border-[3px] border-[#222] rounded-t-lg relative flex items-center justify-center shadow-lg">
+                        <div class="absolute -bottom-[6px] w-[110%] h-1.5 bg-[#111] rounded-b border border-[#333]"></div>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <div class="flex flex-wrap items-center gap-3 mb-2">
+                        <span class="text-[10px] font-bold tracking-widest text-white bg-[#111] border border-[#333] px-2 py-1 rounded">${w.active ? 'ACTIVO' : 'FUERA DE GARANTÍA'}</span>
+                        <span class="text-xs text-gray-500">Adquirido: ${fmt(d.acquired)}</span>
+                    </div>
+                    ${devices.length > 1 ? `<label class="sr-only" for="device-select">Equipo</label><select id="device-select" class="bg-[#111] border border-[#222] text-white text-xs rounded px-2 py-1 mb-2 max-w-full">${options}</select>` : ''}
+                    <h2 class="text-2xl font-bold text-white mb-1">${AK.esc(d.model)}</h2>
+                    <p class="text-sm text-gray-400 mb-6">Identificador: #${AK.esc(d.id)}</p>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="bg-[#111] border border-[#222] p-3 rounded text-center">
+                            <span class="block text-gray-500 uppercase tracking-widest mb-1 text-[9px]">Garantía base</span>
+                            <span class="text-white font-bold">${w.active ? w.left + ' meses restantes' : 'Vencida'}</span>
+                        </div>
+                        <div class="bg-[#111] border border-[#222] p-3 rounded text-center">
+                            <span class="block text-gray-500 uppercase tracking-widest mb-1 text-[9px]">Salud batería</span>
+                            <span class="font-bold ${b ? 'text-green-400' : 'text-gray-400'}">${b ? b.health + '% (Ciclos: ' + b.cycles + ')' : 'No aplica'}</span>
+                        </div>
+                    </div>
+                    <div class="mt-5 flex flex-wrap items-center gap-3">
+                        <button type="button" id="run-diag" class="border border-[#444] text-white text-xs font-bold px-4 py-2 rounded hover:bg-[#1a1a1a] transition-colors">Ejecutar diagnóstico</button>
+                        <span class="text-[10px] text-gray-600">Resultados simulados</span>
+                    </div>
+                    <div id="diag" class="mt-4 hidden" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+            <div class="${card} p-6">
+                <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-widest">Matriz de módulos</h3>
+                <div class="space-y-3">
+                    ${d.ram ? `<div class="flex items-center justify-between bg-[#111] border border-purple-500/30 p-3 rounded">
+                        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-[#222] rounded flex items-center justify-center border border-[#333]"><div class="w-3 h-1.5 bg-purple-500 rounded-sm"></div></div>
+                        <div><p class="text-xs font-bold text-white">Memoria RAM</p><p class="text-[10px] text-gray-500">${AK.esc(d.ram)}</p></div></div>
+                        <span class="text-[9px] text-purple-400 font-bold bg-purple-900/30 px-2 py-1 rounded">INSTALADO</span></div>` : ''}
+                    ${d.storage ? `<div class="flex items-center justify-between bg-[#111] border border-blue-500/30 p-3 rounded">
+                        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-[#222] rounded flex items-center justify-center border border-[#333]"><div class="w-1.5 h-3 bg-blue-500 rounded-sm"></div></div>
+                        <div><p class="text-xs font-bold text-white">Almacenamiento</p><p class="text-[10px] text-gray-500">${AK.esc(d.storage)}</p></div></div>
+                        <span class="text-[9px] text-blue-400 font-bold bg-blue-900/30 px-2 py-1 rounded">INSTALADO</span></div>` : ''}
+                    <button type="button" id="add-ssd" class="w-full text-left flex items-center justify-between bg-[#0a0a0a] border border-dashed border-[#333] p-3 rounded hover:border-gray-500 cursor-pointer transition-colors group">
+                        <span class="flex items-center gap-3">
+                            <span class="w-6 h-6 border border-dashed border-[#444] rounded flex items-center justify-center"><span class="text-gray-600 font-bold">+</span></span>
+                            <span><span class="block text-xs font-bold text-gray-500 group-hover:text-white transition-colors">Slot Expansión M.2</span><span class="block text-[10px] text-gray-600">Libre</span></span>
+                        </span>
+                        <span class="text-[9px] text-gray-400 bg-[#111] px-2 py-1 rounded group-hover:bg-white group-hover:text-black transition-colors">AÑADIR SSD</span>
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        /* ---------- pedidos ---------- */
+        function orders(me) {
+            const list = AK.getOrders(me.email);
+            const host = $('#orders-list');
+            if (!list.length) {
+                host.innerHTML = `<div class="${card} border-dashed p-8 text-center text-sm text-gray-400">Aún no tienes pedidos. <a href="laptops.html" class="text-white underline">Explora las laptops</a> para hacer el primero.</div>`;
+                return;
+            }
+            host.innerHTML = list.map(o => {
+                const stage = AK.orderStage(o);
+                const steps = AK.STAGES.map((s, i) => `<li class="flex-1 min-w-0"><div class="h-1 rounded ${i <= stage ? (stage === 3 ? 'bg-emerald-500' : 'bg-white') : 'bg-[#222]'}"></div>
+                    <span class="block mt-1.5 text-[10px] ${i <= stage ? 'text-white' : 'text-gray-600'}">${s.label}</span></li>`).join('');
+                const names = o.items.map(i => AK.esc(i.name) + (i.quantity > 1 ? ' ×' + i.quantity : '')).join(', ');
+                return `<article class="${card} p-5" data-order="${AK.esc(o.id)}">
+                    <div class="flex flex-wrap justify-between gap-3">
+                        <div class="min-w-0"><p class="text-sm font-bold text-white">Pedido ${AK.esc(o.id)}</p>
+                            <p class="text-xs text-gray-500 mt-0.5">${fmt(o.date)} · ${AK.money(o.total)}</p></div>
+                        <div class="flex gap-2">
+                            <button type="button" data-act="detail" class="border border-[#333] text-white text-[11px] font-bold px-3 py-1.5 rounded hover:bg-[#1a1a1a] transition-colors">Ver detalle</button>
+                            <button type="button" data-act="reorder" class="border border-[#333] text-white text-[11px] font-bold px-3 py-1.5 rounded hover:bg-[#1a1a1a] transition-colors">Comprar de nuevo</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-3 truncate">${names}</p>
+                    <ol class="flex gap-2 mt-4" aria-label="Estado del pedido: ${AK.STAGES[stage].label}">${steps}</ol>
+                    <p class="text-[10px] text-gray-600 mt-3">Seguimiento simulado${stage < 3 ? ' · entrega estimada: ' + fmt(o.eta) : ''}</p>
+                </article>`;
+            }).join('');
+        }
+        function orderDetail(o) {
+            const row = (a, b) => `<div style="display:flex;justify-content:space-between;gap:16px;font-size:13px;margin:4px 0"><span style="color:#9ca3af">${a}</span><span>${b}</span></div>`;
+            AK.modal({
+                title: 'Pedido ' + o.id, subtitle: fmt(o.date) + ' · ' + AK.STAGES[AK.orderStage(o)].label, width: '480px',
+                body: o.items.map(i => row(AK.esc(i.name) + ' × ' + i.quantity, AK.money(i.price * i.quantity))).join('') +
+                    '<div style="border-top:1px solid #222;margin:12px 0"></div>' +
+                    row('Subtotal', AK.money(o.subtotal)) + (o.discount ? row('Descuento (' + AK.esc(o.coupon) + ')', '−' + AK.money(o.discount)) : '') +
+                    row('Envío', o.shipping ? AK.money(o.shipping) : 'Gratis') + row('IVA', AK.money(o.tax)) +
+                    '<div style="font-weight:700">' + row('Total', AK.money(o.total)) + '</div>' +
+                    '<div style="border-top:1px solid #222;margin:12px 0"></div>' +
+                    row('Pago', AK.esc(o.payment.brand) + ' •••• ' + AK.esc(o.payment.last4)) +
+                    row('Envío a', AK.esc(o.address.name) + ', ' + AK.esc(o.address.line) + ', ' + AK.esc(o.address.city) + ', ' + AK.esc(o.address.country)),
+                actions: [{ label: 'Cerrar' }]
+            });
+        }
+
+        /* ---------- garantías ---------- */
+        function warranties(devices) {
+            const host = $('#warranty-list');
+            if (!devices.length) { host.innerHTML = `<div class="md:col-span-2 ${card} border-dashed p-8 text-center text-sm text-gray-400">Tus garantías aparecerán aquí cuando compres o registres un equipo.</div>`; return; }
+            host.innerHTML = devices.map(d => {
+                const w = AK.warranty(d);
+                const used = Math.min(100, Math.max(0, 100 - Math.round(w.left / w.total * 100)));
+                return `<div class="${card} p-5">
+                    <div class="flex justify-between gap-3"><p class="text-sm font-bold text-white">${AK.esc(d.model)}</p>
+                        <span class="text-[10px] font-bold ${w.active ? 'text-emerald-400' : 'text-red-400'}">${w.active ? 'ACTIVA' : 'VENCIDA'}</span></div>
+                    <p class="text-[11px] text-gray-500 mt-0.5">#${AK.esc(d.id)} · ${AK.esc(d.source)}</p>
+                    <div class="h-1.5 bg-[#1a1a1a] rounded mt-4 overflow-hidden" role="img" aria-label="${used}% de la garantía transcurrido"><div class="h-full bg-white" style="width:${used}%"></div></div>
+                    <p class="text-[11px] text-gray-400 mt-2">${w.active ? 'Vence el ' + fmt(w.end) + ' · ' + w.left + ' meses restantes' : 'Venció el ' + fmt(w.end)}</p>
+                </div>`;
+            }).join('');
+        }
+
+        function renderAll() {
+            const { me, devices } = header();
+            ecosystem(devices); orders(me); warranties(devices);
+        }
+
+        /* ---------- diagnóstico simulado ---------- */
+        function runDiagnostic(d) {
+            const out = $('#diag'), btn = $('#run-diag');
+            btn.disabled = true; btn.classList.add('opacity-60');
+            out.classList.remove('hidden');
+            const seed = parseInt(d.id.replace(/\W/g, '').slice(0, 6), 36) || 7;
+            const checks = [
+                ['Procesador', (38 + seed % 12) + ' °C en reposo, sin throttling'],
+                ['Memoria RAM', 'Prueba superada, 0 errores'],
+                ['Almacenamiento', 'Salud del SSD ' + (97 + seed % 4) + '%'],
+                [AK.battery(d) ? 'Batería' : 'Ventilación', AK.battery(d) ? 'Capacidad ' + AK.battery(d).health + '%' : 'Ventiladores a ' + (900 + seed % 300) + ' RPM']
+            ];
+            out.innerHTML = '<ul class="text-xs text-gray-300 flex flex-col gap-1.5" id="diag-list"></ul>';
+            let i = 0;
+            (function step() {
+                if (i >= checks.length) {
+                    out.insertAdjacentHTML('beforeend', '<p class="text-xs text-emerald-400 mt-3 font-semibold">Diagnóstico completo: todo en orden.</p>');
+                    btn.disabled = false; btn.classList.remove('opacity-60'); return;
+                }
+                const li = document.createElement('li');
+                li.innerHTML = '<span class="text-emerald-400">✓</span> <span class="text-white font-semibold">' + checks[i][0] + ':</span> ' + AK.esc(checks[i][1]);
+                $('#diag-list').appendChild(li);
+                i++; setTimeout(step, 650);
+            })();
+        }
+
+        /* ---------- modales ---------- */
+        function addDeviceModal() {
+            const me = AK.currentUser();
+            const names = Object.keys(AK.MODELS).concat(['ARMAKORE Tower Max', 'ARMAKORE Studio Node', 'ARMAKORE Vision One']);
+            const today = new Date().toISOString().slice(0, 10);
+            AK.modal({
+                title: 'Añadir nuevo equipo', subtitle: 'Registra un equipo que ya tengas para ver su garantía y módulos.',
+                body: `<label style="${labelStyle};margin-top:0" for="dv-model">Modelo</label>
+                       <select id="dv-model" style="${inputStyle}">${names.map(n => `<option>${AK.esc(n)}</option>`).join('')}</select>
+                       <label style="${labelStyle}" for="dv-serial">Número de serie</label>
+                       <input id="dv-serial" style="${inputStyle}" placeholder="Ej. AK-P16-99X2" autocomplete="off">
+                       <label style="${labelStyle}" for="dv-date">Fecha de compra</label>
+                       <input id="dv-date" type="date" max="${today}" value="${today}" style="${inputStyle}">
+                       <p id="dv-err" role="alert" style="color:#f87171;font-size:12px;margin:12px 0 0"></p>`,
+                actions: [{ label: 'Cancelar' }, {
+                    label: 'Registrar equipo', primary: true, onClick: ({ box }) => {
+                        const r = AK.addDevice(me.email, { model: box.querySelector('#dv-model').value, serial: box.querySelector('#dv-serial').value, date: box.querySelector('#dv-date').value });
+                        if (!r.ok) { box.querySelector('#dv-err').textContent = r.error; return false; }
+                        selectedId = box.querySelector('#dv-serial').value.trim().toUpperCase();
+                        AK.toast('Equipo registrado'); renderAll(); return true;
+                    }
+                }]
+            });
+        }
+        function settingsModal() {
+            const me = AK.currentUser();
+            AK.modal({
+                title: 'Configuración', subtitle: me.email,
+                body: `<label style="${labelStyle};margin-top:0" for="st-name">Nombre</label>
+                       <input id="st-name" style="${inputStyle}" value="${AK.esc(me.name)}">
+                       <label style="${labelStyle}" for="st-cur">Contraseña actual (solo si la vas a cambiar)</label>
+                       <input id="st-cur" type="password" autocomplete="current-password" style="${inputStyle}">
+                       <label style="${labelStyle}" for="st-new">Nueva contraseña</label>
+                       <input id="st-new" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" style="${inputStyle}">
+                       <p id="st-err" role="alert" style="color:#f87171;font-size:12px;margin:12px 0 0"></p>
+                       <div style="border-top:1px solid #222;margin-top:18px;padding-top:14px">
+                           <button type="button" id="st-reset" style="background:none;border:0;color:#f87171;font-size:12px;font-weight:700;cursor:pointer;padding:0">Restablecer todos los datos de la simulación</button>
+                       </div>`,
+                actions: [{ label: 'Cancelar' }, {
+                    label: 'Guardar cambios', primary: true, onClick: ({ box }) => {
+                        const np = box.querySelector('#st-new').value;
+                        const r = AK.updateProfile({ name: box.querySelector('#st-name').value, currentPassword: box.querySelector('#st-cur').value, newPassword: np || undefined });
+                        if (!r.ok) { box.querySelector('#st-err').textContent = r.error; return false; }
+                        AK.toast('Cambios guardados'); renderAll(); return true;
+                    }
+                }]
+            }).box.querySelector('#st-reset').addEventListener('click', async () => {
+                if (await AK.confirm('Restablecer simulación', 'Se borrarán cuentas, pedidos, equipos y carrito guardados en este navegador.', 'Borrar todo', true)) {
+                    AK.resetSimulation(); location.href = 'index.html';
+                }
+            });
+        }
+
+        /* ---------- eventos ---------- */
+        $('#add-device').addEventListener('click', addDeviceModal);
+        $('#open-settings').addEventListener('click', () => { $('#user-menu').classList.remove('open'); settingsModal(); });
+        $('#logout').addEventListener('click', () => { AK.logout(); location.href = 'index.html'; });
+        const menu = $('#user-menu'), avatar = $('#avatar-btn');
+        avatar.addEventListener('click', e => { e.stopPropagation(); const o = menu.classList.toggle('open'); avatar.setAttribute('aria-expanded', o); });
+        document.addEventListener('click', e => { if (!menu.contains(e.target)) { menu.classList.remove('open'); avatar.setAttribute('aria-expanded', 'false'); } });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') menu.classList.remove('open'); });
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+        $('#ecosistema').addEventListener('click', e => {
+            const t = e.target.closest('button');
+            if (!t) return;
+            if (t.id === 'run-diag') { const me = AK.currentUser(); runDiagnostic(AK.getDevices(me.email).find(d => d.id === selectedId)); }
+            else if (t.id === 'add-ssd') {
+                AK.cart.add({ name: 'NVMe PCIe 4.0 2TB', price: 189, category: 'Almacenamiento' });
+                AK.toast('SSD NVMe 2TB añadido al carrito', { action: { label: 'Ver carrito', run: () => { location.href = 'carrito.html'; } }, duration: 5000 });
+            }
+            else if (t.hasAttribute('data-open-add')) addDeviceModal();
+        });
+        $('#ecosistema').addEventListener('change', e => { if (e.target.id === 'device-select') { selectedId = e.target.value; renderAll(); } });
+        $('#orders-list').addEventListener('click', e => {
+            const t = e.target.closest('button[data-act]');
+            if (!t) return;
+            const o = AK.getOrders(AK.currentUser().email).find(x => x.id === t.closest('[data-order]').dataset.order);
+            if (!o) return;
+            if (t.dataset.act === 'detail') orderDetail(o);
+            else {
+                o.items.forEach(i => AK.cart.add(i, i.quantity));
+                AK.toast('Productos añadidos al carrito', { action: { label: 'Ver carrito', run: () => { location.href = 'carrito.html'; } }, duration: 5000 });
+            }
+        });
+
+        renderAll();
+        setInterval(() => { const { me } = { me: AK.currentUser() }; if (me) orders(me); }, 15000); // avanza el seguimiento simulado
+    })();
+    </script>
+</body>
+</html>

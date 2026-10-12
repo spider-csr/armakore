@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMAKORE - Carrito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { bg: '#030303', surface: '#0a0a0a', border: '#1f1f1f' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-white selection:text-black bg-grid">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 z-50 w-full bg-brand-bg/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-[90rem] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.2em] text-white">ARMAKORE</span>
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-6">
+                <a href="index.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Inicio</a>
+                <a href="laptops.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Laptops</a>
+                <a href="escritorio.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Escritorios</a>
+                <a href="componentes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Componentes</a>
+                <a href="personalizacion.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Personalización PC</a>
+                <a href="integrantes.html" class="text-[11px] font-medium text-gray-500 hover:text-white transition-colors tracking-wider uppercase">Integrantes</a>
+            </div>
+            
+            <div class="flex items-center space-x-5 shrink-0">
+                <div class="hidden lg:flex items-center bg-[#111] border border-[#222] rounded-full px-3 py-1.5 focus-within:border-gray-500 transition-colors w-48">
+                    <input type="text" placeholder="Buscar..." class="bg-transparent border-none outline-none text-xs text-white placeholder-gray-600 w-full">
+                    <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <a href="inicio-sesion.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </a>
+                <a href="carrito.html" class="text-gray-400 hover:text-white transition-colors relative group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                    <span id="cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-white text-black text-[9px] font-bold flex items-center justify-center rounded-full">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow pt-24 pb-24 max-w-[90rem] mx-auto px-4 lg:px-8 w-full relative z-10">
+        <div class="mb-6 text-[11px] text-gray-400 bg-[#0a0a0a] border border-[#222] rounded-lg px-4 py-2.5">
+            Modo simulación: no se realiza ningún cobro real y ninguna tarjeta se guarda. Para probar el pago usa la tarjeta 4242 4242 4242 4242.
+        </div>
+        <div id="view-root"></div>
+    </main>
+
+    <script src="armakore.js"></script>
+    <script>
+    (function () {
+        const $ = s => document.querySelector(s);
+        const state = { view: 'cart', shipping: 'standard' };
+
+        const btnPrimary = 'w-full bg-white text-black font-bold text-sm py-3.5 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-60 disabled:cursor-not-allowed';
+        const inputCls = 'w-full bg-[#111] border border-[#222] text-white rounded-lg px-4 py-2.5 text-sm outline-none transition-all focus:border-white focus:ring-1 focus:ring-white';
+        const labelCls = 'block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2';
+
+        /* ---------- vistas ---------- */
+        function emptyHTML() {
+            return `<div class="max-w-xl mx-auto text-center bg-brand-surface border border-dashed border-[#333] rounded-2xl p-12">
+                <h1 class="text-2xl font-bold text-white mb-2">Tu carrito está vacío</h1>
+                <p class="text-sm text-gray-400 mb-8">Agrega una laptop, un escritorio o un componente para empezar tu pedido.</p>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="laptops.html" class="bg-white text-black text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">Ver laptops</a>
+                    <a href="componentes.html" class="border border-[#444] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#1a1a1a] transition-colors">Ver componentes</a>
+                    <a href="personalizacion.html" class="border border-[#444] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#1a1a1a] transition-colors">Personalizar PC</a>
+                </div>
+            </div>`;
+        }
+
+        function specsHTML(it) {
+            if (it.configuration && Object.keys(it.configuration).length) {
+                const c = it.configuration;
+                const rows = [['Color', c.color], ['CPU', c.cpu], ['GPU', c.gpu], ['RAM', c.ram], ['SSD', c.ssd]].filter(r => r[1]);
+                return '<ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5 text-[11px] text-gray-400">' +
+                    rows.map(r => `<li><span class="text-gray-600">${r[0]}:</span> ${AK.esc(r[1])}</li>`).join('') + '</ul>';
+            }
+            const parts = [it.cpu, it.gpu, it.ram, it.storage].filter(Boolean);
+            return parts.length ? `<p class="mt-2 text-[11px] text-gray-500">${parts.map(AK.esc).join(' · ')}</p>` : '';
+        }
+
+        function itemsHTML(items) {
+            return `<div class="flex items-end justify-between mb-6">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-white">Tu carrito</h1>
+                        <p class="text-sm text-gray-400 mt-1">${AK.cart.count()} producto${AK.cart.count() === 1 ? '' : 's'}</p>
+                    </div>
+                    <button type="button" data-action="clear" class="text-xs text-gray-500 hover:text-white underline transition-colors">Vaciar carrito</button>
+                </div>
+                <div class="flex flex-col gap-4">` +
+                items.map(it => {
+                    const q = Number(it.quantity || 1);
+                    return `<article class="bg-brand-surface border border-brand-border rounded-xl p-5 flex flex-col sm:flex-row gap-5" data-name="${AK.esc(it.name)}">
+                        <div class="w-full sm:w-28 h-20 shrink-0 bg-[#050505] border border-[#222] rounded-lg flex items-center justify-center" aria-hidden="true">
+                            <div class="w-14 h-9 border-2 border-[#333] rounded-t bg-[#0a0a0a] relative"><div class="absolute -bottom-[7px] -left-[6px] w-[calc(100%+12px)] h-1.5 bg-[#111] border border-[#333] rounded-b"></div></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between gap-4">
+                                <div class="min-w-0">
+                                    <h2 class="text-base font-bold text-white">${AK.esc(it.name)}</h2>
+                                    <p class="text-xs text-gray-500 mt-0.5">${AK.esc(AK.catLabel(it.category))}</p>
+                                </div>
+                                <div class="text-right shrink-0">
+                                    <div class="text-base font-bold text-white">${AK.money(it.price * q)}</div>
+                                    ${q > 1 ? `<div class="text-[10px] text-gray-500">${AK.money(it.price)} c/u</div>` : ''}
+                                </div>
+                            </div>
+                            ${specsHTML(it)}
+                            <div class="flex items-center justify-between mt-4">
+                                <div class="inline-flex items-center border border-[#333] rounded-lg overflow-hidden" role="group" aria-label="Cantidad">
+                                    <button type="button" data-action="dec" ${q <= 1 ? 'disabled' : ''} aria-label="Quitar una unidad" class="w-9 h-9 text-white hover:bg-[#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed">−</button>
+                                    <span class="w-10 text-center text-sm font-bold text-white" aria-live="polite">${q}</span>
+                                    <button type="button" data-action="inc" ${q >= 10 ? 'disabled' : ''} aria-label="Agregar una unidad" class="w-9 h-9 text-white hover:bg-[#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed">+</button>
+                                </div>
+                                <button type="button" data-action="remove" class="text-xs text-gray-500 hover:text-red-400 transition-colors">Eliminar</button>
+                            </div>
+                        </div>
+                    </article>`;
+                }).join('') + '</div>';
+        }
+
+        function field(id, label, extra) {
+            extra = extra || {};
+            return `<div class="${extra.span || ''}">
+                <label for="${id}" class="${labelCls}">${label}</label>
+                ${extra.html || `<input id="${id}" type="${extra.type || 'text'}" autocomplete="${extra.ac || 'off'}" ${extra.inputmode ? `inputmode="${extra.inputmode}"` : ''} ${extra.max ? `maxlength="${extra.max}"` : ''} placeholder="${extra.ph || ''}" value="${AK.esc(extra.value || '')}" class="${inputCls}" aria-describedby="err-${id}">`}
+                <p id="err-${id}" class="text-[11px] text-red-400 mt-1 hidden" role="alert"></p>
+            </div>`;
+        }
+
+        function checkoutHTML() {
+            const me = AK.currentUser();
+            const countries = ['Ecuador', 'Colombia', 'Perú', 'México', 'Chile', 'Argentina', 'España', 'Estados Unidos', 'Otro'];
+            return `<button type="button" data-action="back" class="text-xs text-gray-500 hover:text-white mb-4 transition-colors">← Volver al carrito</button>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-8">Finalizar compra</h1>
+                <div id="pay-error" class="hidden mb-6 text-sm text-red-300 bg-red-950/40 border border-red-900 rounded-lg px-4 py-3" role="alert"></div>
+                <div class="bg-brand-surface border border-brand-border rounded-xl p-6 mb-6">
+                    <h2 class="text-sm font-bold text-white mb-5">Datos de envío</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${field('f-name', 'Nombre completo', { value: me ? me.name : '', ac: 'name', span: 'sm:col-span-2' })}
+                        ${field('f-phone', 'Teléfono', { type: 'tel', ac: 'tel', ph: '099 123 4567', inputmode: 'tel' })}
+                        ${field('f-country', 'País', { html: `<select id="f-country" class="${inputCls}">${countries.map(c => `<option>${c}</option>`).join('')}</select>` })}
+                        ${field('f-address', 'Dirección', { ac: 'street-address', ph: 'Calle, número y referencia', span: 'sm:col-span-2' })}
+                        ${field('f-city', 'Ciudad', { ac: 'address-level2', span: 'sm:col-span-2' })}
+                    </div>
+                </div>
+                <div class="bg-brand-surface border border-brand-border rounded-xl p-6 mb-6">
+                    <h2 class="text-sm font-bold text-white mb-5">Método de envío</h2>
+                    <div class="flex flex-col gap-3" role="radiogroup" aria-label="Método de envío">
+                        ${Object.entries(AK.SHIPPING).map(([key, s]) => `
+                        <label class="flex items-center justify-between gap-4 border border-[#222] rounded-lg p-4 cursor-pointer hover:border-[#555] has-[:checked]:border-white has-[:checked]:bg-[#1a1a1a]">
+                            <span class="flex items-center gap-3"><input type="radio" name="shipping" value="${key}" ${state.shipping === key ? 'checked' : ''} class="accent-white">
+                                <span class="text-sm text-white font-semibold">${s.label}</span></span>
+                            <span class="text-xs text-gray-400">${s.freeFrom !== Infinity ? `Gratis desde ${AK.money(s.freeFrom).replace('.00', '')}, si no ${AK.money(s.price).replace('.00', '')}` : AK.money(s.price).replace('.00', '')}</span>
+                        </label>`).join('')}
+                    </div>
+                </div>
+                <div class="bg-brand-surface border border-brand-border rounded-xl p-6">
+                    <h2 class="text-sm font-bold text-white mb-5">Pago con tarjeta (simulado)</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${field('f-card-name', 'Nombre en la tarjeta', { ac: 'cc-name', span: 'sm:col-span-2' })}
+                        ${field('f-card', 'Número de tarjeta', { ac: 'cc-number', inputmode: 'numeric', ph: '4242 4242 4242 4242', max: '23', span: 'sm:col-span-2' })}
+                        ${field('f-exp', 'Vence (MM/AA)', { ac: 'cc-exp', inputmode: 'numeric', ph: '08/29', max: '5' })}
+                        ${field('f-cvc', 'CVC', { ac: 'cc-csc', inputmode: 'numeric', ph: '123', max: '4' })}
+                    </div>
+                    <p class="text-[11px] text-gray-500 mt-4">Tarjeta de prueba aprobada: 4242 4242 4242 4242. Tarjeta de prueba rechazada: 4000 0000 0000 0002. Usa cualquier fecha futura y cualquier CVC.</p>
+                </div>`;
+        }
+
+        function summaryHTML() {
+            const items = AK.cart.get();
+            const q = AK.quote(items, state.shipping);
+            const code = AK.getCoupon();
+            const row = (label, value, cls) => `<div class="flex justify-between text-sm ${cls || 'text-gray-400'}"><span>${label}</span><span>${value}</span></div>`;
+            const couponBlock = q.code
+                ? `<div class="flex items-center justify-between bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-xs">
+                        <span class="text-white font-semibold">${AK.esc(q.code)} <span class="text-gray-500 font-normal">· ${AK.esc(AK.COUPONS[q.code].label)}</span></span>
+                        <button type="button" data-action="coupon-remove" class="text-gray-500 hover:text-white underline">Quitar</button>
+                   </div>`
+                : `<div>
+                        <label for="coupon" class="${labelCls}">Cupón</label>
+                        <div class="flex gap-2">
+                            <input id="coupon" type="text" autocomplete="off" placeholder="Código" class="${inputCls}" aria-describedby="coupon-msg">
+                            <button type="button" data-action="coupon-apply" class="border border-[#444] text-white text-xs font-bold px-4 rounded-lg hover:bg-[#1a1a1a] transition-colors">Aplicar</button>
+                        </div>
+                        <p id="coupon-msg" class="text-[11px] mt-1.5 text-gray-500" role="status">Prueba: ARMAKORE10, ESTUDIANTE15 o ENVIOGRATIS</p>
+                   </div>`;
+            return `<h2 class="text-sm font-bold text-white mb-5">Resumen del pedido</h2>
+                <div class="flex flex-col gap-2.5 pb-5 border-b border-[#222]">
+                    ${row('Subtotal', AK.money(q.subtotal))}
+                    ${q.discount ? row('Descuento (' + AK.esc(q.code) + ')', '−' + AK.money(q.discount), 'text-emerald-400') : ''}
+                    ${row('Envío', q.shipping === 0 ? 'Gratis' : AK.money(q.shipping))}
+                    ${row('IVA (' + Math.round(AK.TAX_RATE * 100) + '%)', AK.money(q.tax))}
+                </div>
+                <div class="flex justify-between items-baseline py-5">
+                    <span class="text-sm text-gray-400">Total</span>
+                    <span class="text-3xl font-bold text-white">${AK.money(q.total)}</span>
+                </div>
+                <div class="mb-5">${couponBlock}</div>
+                ${state.view === 'cart'
+                    ? `<button type="button" data-action="checkout" class="${btnPrimary}">Finalizar compra</button>`
+                    : `<button type="button" id="pay-btn" data-action="pay" class="${btnPrimary}">Pagar ${AK.money(q.total)}</button>`}
+                <p class="text-[10px] text-gray-500 mt-3 text-center">Todo lo que ves aquí es una simulación para el proyecto.</p>`;
+        }
+
+        function doneHTML(order) {
+            const eta = new Date(order.eta).toLocaleDateString('es-EC', { day: 'numeric', month: 'long', year: 'numeric' });
+            return `<div class="max-w-2xl mx-auto bg-brand-surface border border-brand-border rounded-2xl p-8 sm:p-10">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center mb-5" aria-hidden="true">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">Pedido confirmado</h1>
+                <p class="text-sm text-gray-400 mb-6">Número de pedido <span class="text-white font-bold">${AK.esc(order.id)}</span>. Enviamos el resumen a ${AK.esc(order.email)} (simulado).</p>
+                <div class="border-t border-[#222] py-5 flex flex-col gap-2">
+                    ${order.items.map(i => `<div class="flex justify-between text-sm"><span class="text-gray-300">${AK.esc(i.name)} <span class="text-gray-500">× ${i.quantity}</span></span><span class="text-white">${AK.money(i.price * i.quantity)}</span></div>`).join('')}
+                </div>
+                <div class="border-t border-[#222] py-5 flex flex-col gap-2 text-sm">
+                    <div class="flex justify-between"><span class="text-gray-400">Total pagado</span><span class="text-white font-bold">${AK.money(order.total)}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Pago</span><span class="text-white">${AK.esc(order.payment.brand)} terminada en ${AK.esc(order.payment.last4)}</span></div>
+                    <div class="flex justify-between gap-6"><span class="text-gray-400 shrink-0">Envío a</span><span class="text-white text-right">${AK.esc(order.address.name)}, ${AK.esc(order.address.line)}, ${AK.esc(order.address.city)}, ${AK.esc(order.address.country)}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Entrega estimada</span><span class="text-white">${AK.esc(eta)}</span></div>
+                </div>
+                <div class="flex flex-wrap gap-3 mt-4">
+                    <a href="dashboard.html#pedidos" class="bg-white text-black text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-gray-200 transition-colors">Ver mis pedidos</a>
+                    <a href="index.html" class="border border-[#444] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#1a1a1a] transition-colors">Seguir comprando</a>
+                </div>
+            </div>`;
+        }
+
+        /* ---------- render ---------- */
+        function render() {
+            if (state.view === 'done') return;
+            const root = $('#view-root');
+            const items = AK.cart.get();
+            if (!items.length) { state.view = 'cart'; root.innerHTML = emptyHTML(); return; }
+            root.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <section id="left" class="lg:col-span-2"></section>
+                <aside id="summary" class="bg-brand-surface border border-brand-border rounded-2xl p-6 lg:sticky lg:top-24"></aside>
+            </div>`;
+            renderLeft();
+            renderSummary();
+        }
+        function renderLeft() {
+            $('#left').innerHTML = state.view === 'cart' ? itemsHTML(AK.cart.get()) : checkoutHTML();
+        }
+        function renderSummary() { const s = $('#summary'); if (s) s.innerHTML = summaryHTML(); }
+
+        /* ---------- checkout ---------- */
+        function showFieldError(id, msg) {
+            const el = $('#err-' + id), input = $('#' + id);
+            if (!el) return;
+            el.textContent = msg || '';
+            el.classList.toggle('hidden', !msg);
+            if (input) input.classList.toggle('border-red-500', !!msg);
+        }
+        function validateCheckout() {
+            const v = id => ($('#' + id).value || '').trim();
+            const checks = [];
+            const digits = v('f-card').replace(/\s/g, '');
+            const exp = v('f-exp').match(/^(\d{2})\/(\d{2})$/);
+            const now = new Date();
+            checks.push(['f-name', v('f-name').length >= 2, 'Escribe el nombre de quien recibe.']);
+            checks.push(['f-phone', v('f-phone').replace(/\D/g, '').length >= 7, 'Escribe un teléfono válido (mínimo 7 dígitos).']);
+            checks.push(['f-address', v('f-address').length >= 5, 'Escribe la dirección de entrega.']);
+            checks.push(['f-city', v('f-city').length >= 2, 'Escribe la ciudad.']);
+            checks.push(['f-card-name', v('f-card-name').length >= 2, 'Escribe el nombre como aparece en la tarjeta.']);
+            checks.push(['f-card', /^\d{13,19}$/.test(digits) && AK.luhn(digits), 'El número de tarjeta no es válido. Revísalo o usa 4242 4242 4242 4242.']);
+            checks.push(['f-exp', !!exp && Number(exp[1]) >= 1 && Number(exp[1]) <= 12 &&
+                (2000 + Number(exp[2]) > now.getFullYear() || (2000 + Number(exp[2]) === now.getFullYear() && Number(exp[1]) >= now.getMonth() + 1)),
+                'La fecha debe tener formato MM/AA y no estar vencida.']);
+            checks.push(['f-cvc', /^\d{3,4}$/.test(v('f-cvc')), 'El CVC tiene 3 o 4 dígitos.']);
+            let first = null;
+            checks.forEach(([id, ok, msg]) => { showFieldError(id, ok ? '' : msg); if (!ok && !first) first = id; });
+            if (first) $('#' + first).focus();
+            return !first;
+        }
+        function pay() {
+            const payErr = $('#pay-error');
+            payErr.classList.add('hidden');
+            if (!validateCheckout()) return;
+            const btn = $('#pay-btn');
+            btn.disabled = true;
+            btn.textContent = 'Procesando pago…';
+            const digits = $('#f-card').value.replace(/\s/g, '');
+            setTimeout(() => {
+                if (digits === '4000000000000002') {
+                    payErr.textContent = 'El banco rechazó el pago (tarjeta de prueba de rechazo). Prueba con otra tarjeta, por ejemplo 4242 4242 4242 4242.';
+                    payErr.classList.remove('hidden');
+                    payErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    renderSummary();
+                    return;
+                }
+                state.view = 'done';
+                const order = AK.placeOrder({
+                    shipping: state.shipping,
+                    address: { name: $('#f-name').value.trim(), phone: $('#f-phone').value.trim(), line: $('#f-address').value.trim(), city: $('#f-city').value.trim(), country: $('#f-country').value },
+                    payment: { brand: AK.cardBrand(digits), last4: digits.slice(-4) }
+                });
+                if (!order) { state.view = 'checkout'; render(); AK.toast('No se pudo crear el pedido. Inicia sesión e inténtalo otra vez.', { type: 'error' }); return; }
+                $('#view-root').innerHTML = doneHTML(order);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1600);
+        }
+        function startCheckout() {
+            if (!AK.currentUser()) {
+                AK.modal({
+                    title: 'Inicia sesión para pagar',
+                    subtitle: 'Tu carrito se conserva mientras entras o creas tu cuenta.',
+                    body: '',
+                    actions: [
+                        { label: 'Crear cuenta', onClick: () => { location.href = 'registro.html?next=carrito.html'; return false; } },
+                        { label: 'Iniciar sesión', primary: true, onClick: () => { location.href = 'inicio-sesion.html?next=carrito.html'; return false; } }
+                    ]
+                });
+                return;
+            }
+            state.view = 'checkout';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ---------- eventos ---------- */
+        const root = $('#view-root');
+        root.addEventListener('click', async e => {
+            const t = e.target.closest('[data-action]');
+            if (!t) return;
+            const action = t.dataset.action;
+            const card = t.closest('[data-name]');
+            const name = card ? card.dataset.name : null;
+            const item = name ? AK.cart.get().find(i => i.name === name) : null;
+            if (action === 'inc' && item) { AK.cart.setQty(name, Number(item.quantity) + 1); }
+            else if (action === 'dec' && item) { AK.cart.setQty(name, Number(item.quantity) - 1); }
+            else if (action === 'remove' && item) {
+                const before = AK.cart.get();
+                AK.cart.remove(name);
+                AK.toast('Quitaste "' + name + '"', { action: { label: 'Deshacer', run: () => { AK.cart.save(before); } }, duration: 6000 });
+            }
+            else if (action === 'clear') {
+                if (await AK.confirm('Vaciar carrito', 'Se quitarán todos los productos del carrito.', 'Vaciar', true)) { AK.cart.clear(); AK.removeCoupon(); render(); }
+            }
+            else if (action === 'coupon-apply') {
+                const r = AK.applyCoupon($('#coupon').value);
+                if (r.ok) { renderSummary(); AK.toast('Cupón ' + r.code + ' aplicado'); }
+                else { const m = $('#coupon-msg'); m.textContent = r.error; m.className = 'text-[11px] mt-1.5 text-red-400'; }
+            }
+            else if (action === 'coupon-remove') { AK.removeCoupon(); renderSummary(); }
+            else if (action === 'checkout') startCheckout();
+            else if (action === 'back') { state.view = 'cart'; render(); }
+            else if (action === 'pay') pay();
+        });
+        root.addEventListener('change', e => {
+            if (e.target.name === 'shipping') { state.shipping = e.target.value; renderSummary(); }
+        });
+        root.addEventListener('input', e => {
+            const t = e.target;
+            if (t.id === 'f-card') {
+                const d = t.value.replace(/\D/g, '').slice(0, 19);
+                t.value = d.replace(/(.{4})/g, '$1 ').trim();
+            } else if (t.id === 'f-exp') {
+                let d = t.value.replace(/\D/g, '').slice(0, 4);
+                if (d.length >= 3) d = d.slice(0, 2) + '/' + d.slice(2);
+                t.value = d;
+            } else if (t.id === 'f-cvc') {
+                t.value = t.value.replace(/\D/g, '').slice(0, 4);
+            }
+            if (t.id && t.id.startsWith('f-')) showFieldError(t.id, '');
+        });
+        root.addEventListener('keydown', e => {
+            if (e.key !== 'Enter' || e.target.tagName !== 'INPUT' || e.target.type === 'radio') return;
+            e.preventDefault();
+            if (e.target.id === 'coupon') root.querySelector('[data-action="coupon-apply"]').click();
+            else if (state.view === 'checkout') pay();
+        });
+        window.addEventListener('armakore:cart-updated', () => { if (state.view !== 'done') render(); });
+        window.addEventListener('storage', e => { if (e.key === AK.K.cart && state.view !== 'done') render(); });
+
+        render();
+    })();
+    </script>
+</body>
+</html>
